@@ -44,6 +44,7 @@
     "@types/cors": "^2.8.13",
     "@types/dotenv": "^8.2.0",
     "@types/express": "^4.17.17",
+    "@types/jsonwebtoken": "^9.0.1",
     "bunyan": "^1.8.15",
     "cors": "^2.8.5",
     "dotenv": "^16.0.3",
@@ -51,8 +52,9 @@
     "express-validation": "^4.1.0",
     "express-validator": "^6.15.0",
     "jest-ts-webcompat-resolver": "^1.0.0",
+    "jsonwebtoken": "^9.0.0",
     "mongodb": "^5.1.0",
-    "mongoose": "6.10.0",
+    "mongoose": "^7.0.1",
     "supertest": "^6.3.3"
   }
 }
