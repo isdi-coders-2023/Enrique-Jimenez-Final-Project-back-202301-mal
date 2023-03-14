@@ -1,18 +1,15 @@
 import express from 'express';
 
-import bodyParser from 'body-parser';
 import { validate } from 'express-validation';
 import { loginValidation } from './auth-types.js';
 import { loginUserController } from './auth-controllers.js';
+import { errorHandler } from '../../utils/error-handler.js';
 
 const authRouter = express.Router();
 
-const app = express();
-app.use(bodyParser.json());
+authRouter.use(validate(loginValidation));
 
 authRouter.route('/register');
-authRouter
-  .route('/login')
-  .post(validate(loginValidation, {}, {}), loginUserController);
+authRouter.route('/login').post(errorHandler, loginUserController);
 
 export default authRouter;
