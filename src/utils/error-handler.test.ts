@@ -4,16 +4,16 @@ import { ValidationError } from 'express-validation';
 import { errorHandler } from './error-handler';
 
 describe('errorHandler', () => {
-  let mockRequest: Request;
-  let mockResponse: Response;
+  let mockRequest: Partial<Request>;
+  let mockResponse: Partial<Response>;
   const nextFunction = jest.fn();
 
   beforeEach(() => {
-    mockRequest = {} as Request;
+    mockRequest = {};
     mockResponse = {
       json: jest.fn().mockReturnThis(),
       status: jest.fn().mockReturnThis(),
-    } as unknown as Response;
+    };
   });
 
   test('should handle ValidationError', () => {
@@ -24,7 +24,12 @@ describe('errorHandler', () => {
       error: mockError.details,
     };
 
-    errorHandler(mockError, mockRequest, mockResponse, nextFunction);
+    errorHandler(
+      mockError,
+      mockRequest as Request,
+      mockResponse as Response,
+      nextFunction,
+    );
 
     expect(mockResponse.status).toHaveBeenCalledWith(
       expectedResponse.statusCode,
