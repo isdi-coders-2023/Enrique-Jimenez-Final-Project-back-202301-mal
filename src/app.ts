@@ -11,15 +11,7 @@ app.get('/', (_req, res) => {
   res.json('Server ON');
 });
 
-app.use(
-  cors({
-    origin: [
-      'http://localhost:4000/',
-      'https://enrique-jimenez-final-project-back.onrender.com/auth/login',
-      'http://localhost:3000/',
-    ],
-  }),
-);
+app.use(cors());
 
 app.use('/auth', authRouter);
 
