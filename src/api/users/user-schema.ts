@@ -3,7 +3,7 @@ import mongoose, { Schema } from 'mongoose';
 export interface User {
   email: string;
   password: string;
-  phone: number;
+  phone: string;
   firstName: string;
   surName: string;
   profileImg: string;
@@ -12,7 +12,7 @@ export interface User {
 const userSchema = new Schema<User>({
   email: String,
   password: String,
-  phone: Number,
+  phone: String,
   firstName: String,
   surName: String,
   profileImg: String,

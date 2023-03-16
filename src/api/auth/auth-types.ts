@@ -11,6 +11,11 @@ export interface LoginResponse {
 
 export type AuthRequest = Pick<User, 'email' | 'password'>;
 
+export type RegRequest = Pick<
+  User,
+  'email' | 'password' | 'firstName' | 'surName'
+>;
+
 export const loginValidation = {
   body: Joi.object({
     email: Joi.string().email().required(),
