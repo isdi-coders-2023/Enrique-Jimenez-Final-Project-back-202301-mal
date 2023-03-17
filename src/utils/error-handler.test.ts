@@ -46,6 +46,8 @@ describe('errorHandler', () => {
       nextFunction,
     );
     expect(mockResponse.status).toHaveBeenCalledWith(500);
-    expect(mockResponse.json).toHaveBeenCalledWith('An error occurred');
+    expect(mockResponse.json).toHaveBeenCalledWith({
+      msg: 'An error occurred',
+    });
   });
 });
