@@ -11,14 +11,16 @@ export const errorHandler = (
 ) => {
   if (err instanceof ValidationError) {
     log.error(err);
-    return res.status(err.statusCode).json(err);
+    return res
+      .status(err.statusCode)
+      .json({ msg: err.details.body?.[0].message ?? err.message });
   }
 
   if (err instanceof CustomHTTPError) {
     log.error(err);
-    return res.status(err.httpCode).json(err.message);
+    return res.status(err.httpCode).json(err.toBodyJSON());
   }
 
   log.error(err);
-  return res.status(500).json(err.message);
+  return res.status(500).json({ msg: err.message });
 };
