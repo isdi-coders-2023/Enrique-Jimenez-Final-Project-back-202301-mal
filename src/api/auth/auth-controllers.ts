@@ -15,7 +15,7 @@ export const registerController: RequestHandler<
     const existingUser = await UserModel.findOne({ email }).exec();
     if (existingUser !== null) {
       log.error('This email is already registered');
-      throw new CustomHTTPError(409, 'That email is already registered');
+      throw new CustomHTTPError(409, 'Ya existe un usuario con este e-mail');
     }
 
     const registerUser: User = {
@@ -50,8 +50,8 @@ export const loginUserController: RequestHandler<
     };
     const existingUser = await UserModel.findOne(filterUser).exec();
     if (existingUser === null) {
-      log.debug(encryptPassword(password));
-      return res.sendStatus(404);
+      log.error('User not found.');
+      throw new CustomHTTPError(404, 'El usuario o contraseña son incorrectos');
     }
 
     const tokenJWT = generateJWTToken(email);
