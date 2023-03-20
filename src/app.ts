@@ -1,5 +1,6 @@
 import cors from 'cors';
 import express from 'express';
+import apiRouter from './api/api-router.js';
 import authRouter from './api/auth/auth-router.js';
 import { errorHandler } from './utils/error-handler.js';
 
@@ -14,6 +15,7 @@ app.get('/', (_req, res) => {
 app.use(cors());
 
 app.use('/auth', authRouter);
+app.use('/api/v1', apiRouter);
 
 app.use(errorHandler);
 
