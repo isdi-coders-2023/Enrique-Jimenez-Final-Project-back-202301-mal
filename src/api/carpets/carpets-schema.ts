@@ -3,7 +3,7 @@ import mongoose, { Schema } from 'mongoose';
 export interface Carpet {
   name: string;
   thumb: string;
-  price: number;
+  price: string;
   width: number;
   height: number;
 }
@@ -11,7 +11,7 @@ export interface Carpet {
 const carpetSchema = new Schema<Carpet>({
   name: String,
   thumb: String,
-  price: Number,
+  price: String,
   width: Number,
   height: Number,
 });
