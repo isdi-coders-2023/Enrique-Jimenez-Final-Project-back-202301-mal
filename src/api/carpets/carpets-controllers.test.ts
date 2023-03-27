@@ -1,5 +1,8 @@
 import { NextFunction, Request, Response } from 'express';
-import { createCarpetController } from './carpets-controllers';
+import {
+  createCarpetController,
+  getCarpetsController,
+} from './carpets-controllers';
 import { CarpetModel } from './carpets-schema';
 
 jest.mock('@supabase/supabase-js', () => {
@@ -26,6 +29,41 @@ jest.mock('@supabase/supabase-js', () => {
       },
     })),
   };
+});
+
+describe('Given a getRobotsController function from robotsController', () => {
+  const request = {} as Request;
+  const response = {
+    status: jest.fn().mockReturnThis(),
+    json: jest.fn(),
+  } as Partial<Response>;
+
+  const carpet = [
+    {
+      _id: '6421d273c031cfb388acbd94',
+      name: 'Flowers&Leaves',
+      thumb:
+        'https://uqepswrzhdalcfakmxxg.supabase.co/storage/v1/object/public/carpetsthumbs/Flowers&Leaves.png',
+      price: '120 €',
+    },
+  ];
+
+  test('when it is invoked it should return a list of robots', async () => {
+    CarpetModel.find = jest.fn().mockImplementation(() => ({
+      exec: jest.fn().mockResolvedValue(carpet),
+    }));
+    await getCarpetsController(request, response as Response, jest.fn());
+    expect(response.json).toHaveBeenCalledWith(carpet);
+  });
+
+  test('when the database throws an error then it should response with status 500', async () => {
+    const next = jest.fn();
+    CarpetModel.find = jest.fn().mockImplementation(() => ({
+      exec: jest.fn().mockRejectedValue(new Error('Something went wrong')),
+    }));
+    await getCarpetsController(request, response as Response, next);
+    expect(next).toHaveBeenCalled();
+  });
 });
 
 describe('Given a create carpets controller', () => {

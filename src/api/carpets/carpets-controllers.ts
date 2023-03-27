@@ -3,8 +3,19 @@ import {
   PROFILE_BUCKET_NAME,
   supabase,
 } from '../../database/supabase-client.js';
+import { CustomHTTPError } from '../../errors/custom-http-error.js';
 import log from '../../logger.js';
 import { Carpet, CarpetModel } from './carpets-schema.js';
+
+export const getCarpetsController: RequestHandler = async (_req, res, next) => {
+  try {
+    const foundCarpets = await CarpetModel.find({}, { v__: 0 }).exec();
+    res.status(201);
+    res.json(foundCarpets);
+  } catch (err) {
+    next(err);
+  }
+};
 
 export const createCarpetController: RequestHandler<
   unknown,
@@ -15,11 +26,21 @@ export const createCarpetController: RequestHandler<
 
   try {
     const fileBuffer = req.file?.buffer;
+    log.info(req.file);
     if (fileBuffer !== undefined) {
+      log.info('HOLA, TENGO FILE BUFFER');
       const fileName = `${name}.png`;
       const { error } = await supabase.storage
         .from(PROFILE_BUCKET_NAME)
         .upload(fileName, fileBuffer);
+      log.info(fileBuffer);
+      if (error !== null) {
+        log.info(error);
+        throw new CustomHTTPError(
+          409,
+          'Una alfombra con estas características ya existe',
+        );
+      }
 
       if (error === null) {
         const { data } = supabase.storage
@@ -33,7 +54,7 @@ export const createCarpetController: RequestHandler<
           width,
           height,
         };
-
+        log.info(createCarpet);
         await CarpetModel.create(createCarpet);
         log.info('New carpet created');
         return res
