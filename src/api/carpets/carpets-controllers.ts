@@ -27,8 +27,7 @@ export const createCarpetController: RequestHandler<
     const fileBuffer = req.file?.buffer;
     log.info(req.file);
     if (fileBuffer !== undefined) {
-      log.info('HOLA, TENGO FILE BUFFER');
-      const fileName = `${name}-${Date.now}.png`;
+      const fileName = `${name}${Date.now()}.png`;
       const { error } = await supabase.storage
         .from(PROFILE_BUCKET_NAME)
         .upload(fileName, fileBuffer);
